@@ -1,0 +1,347 @@
+ManytoMany:-
+------------------
+
+
+ManyTOMany :- (it is binature a bidirectional association)
+===========
+
+
+
+--it is a combination of one-to-many association from parent and one-to-many association from child 
+
+--at table level,to establish a many-to-many relationship we need a third linking table.
+
+
+steps to achive the MTM relationship bt classes in HB:-
+------------------------------------------------------
+
+
+incase of MTM relationship we need to take both side collection properties and we need to apply @ManyToMany anno on the top of both side variables.
+
+
+==============================================================================================================================================================
+
+
+
+@Entity
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int empId;
+	private String name;
+	private int salary;
+	
+	@ManyToMany(cascade = CascadeType.ALL,mappedBy = "emps")
+	private List<Department> depts = new ArrayList<>();
+	
+
+	@Override
+	public String toString() {
+		return "Employee [empId=" + empId + ", name=" + name + ", salary=" + salary + ", depts=" + depts + "]";
+	}
+
+	public List<Department> getDepts() {
+		return depts;
+	}
+
+	public void setDepts(List<Department> depts) {
+		this.depts = depts;
+	}
+
+	public Employee(int empId, String name, int salary) {
+		super();
+		this.empId = empId;
+		this.name = name;
+		this.salary = salary;
+	}
+
+	public Employee(String name, int salary) {
+		super();
+		this.name = name;
+		this.salary = salary;
+	}
+
+	public int getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+
+	
+
+	public Employee() {
+		super();
+	}
+
+}
+
+
+
+
+@Entity
+public class Department {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int deptId;
+	private String dname;
+	private String location;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Employee> emps = new ArrayList<>();
+	
+	
+	public List<Employee> getEmps() {
+		return emps;
+	}
+
+	public void setEmps(List<Employee> emps) {
+		this.emps = emps;
+	}
+
+	public Department(String dname, String location) {
+		super();
+		this.dname = dname;
+		this.location = location;
+	
+	}
+
+	public Department() {
+		super();
+	}
+
+	public Department(int deptId, String dname, String location) {
+		super();
+		this.deptId = deptId;
+		this.dname = dname;
+		this.location = location;
+		
+	}
+
+	public int getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDname() {
+		return dname;
+	}
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	
+
+	@Override
+	public String toString() {
+		return "Department [deptId=" + deptId + ", dname=" + dname + ", location=" + location + ", emps=" + emps + "]";
+	}	
+	
+}
+
+
+
+
+public class Demo {
+	
+	
+	public static void main(String[] args) {
+		
+		EntityManager em=EMUtil.provideEntityManager();
+		
+		
+		Department d1 = new Department();
+		d1.setDname("sales");
+		d1.setLocation("kolkata");
+
+
+		Department d2 = new Department();
+		d2.setDname("Marketing");
+		d2.setLocation("delhi");
+
+		
+		
+		
+		//creating employee without department
+		Employee emp1 = new Employee();
+		emp1.setName("ram");
+		emp1.setSalary(50000);
+		
+		
+		Employee emp2 = new Employee();
+		emp2.setName("dinesh");
+		emp2.setSalary(30000);
+		
+		//associating department with both employees(ram,dinesh) with dept sales
+		emp1.getDepts().add(d1);
+		emp2.getDepts().add(d1);
+		
+		//associating dept(sales) with both emp1 and emp2
+		
+		d1.getEmps().add(emp1);
+		d1.getEmps().add(emp2);
+		
+		
+		
+		//assume dinesh is working in 2 dept(sales and marketing)
+		emp2.getDepts().add(d2);
+		d2.getEmps().add(emp2);
+		
+		
+		
+		em.getTransaction().begin();
+		
+		em.persist(d1);
+		em.persist(d2);
+		
+		em.getTransaction().commit();
+
+		System.out.println("done");	
+	}
+}
+
+
+
+--here if we save the both the objs by associating them together then it will create total 4 tables
+
+department
+employee
+department_employee(Employee_empid, deptList_did)
+employee_department(Department_did,empList_empid)
+
+
+
+
+
+
+--in order to generate only one linking table then we need to use mappedBy property here also(in any side).
+
+ex:-
+
+
+
+@Entity
+public class Department {
+	
+	@ManyToMany(cascade = CascadeType.ALL,mappedBy = "deptList")
+	List<Employee> empList = new ArrayList<>();;
+	
+}	
+
+
+
+
+--here Employee obj doing the mapping not the Department obj.
+so only one linking table will be created by name employee_department.
+
+
+
+--here also we can mention the JoinTable name and joinColumn names,inverseColumn name ,this should be inside the Employee class.
+
+
+ex:-
+
+@Entity
+public class Employee {
+
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "emp_dept", joinColumns = @JoinColumn(name="empid"),inverseJoinColumns = @JoinColumn(name="deptid") )
+	private List<Department> deptList;
+	
+}
+
+
+===================================================================================================================================================
+===================================================================================================================================================
+
+Navigating from emp to dept:-
+-----------------------------
+
+		List<Department> dlist =em.find(Employee.class, 2).getDeptList();
+		
+		System.out.println(dlist);
+		
+		
+Navigating from dept to emp:-
+------------------------------------
+		
+
+		List<Employee> dlist =em.find(Department.class, 1).getEmpList();
+		
+		System.out.println(dlist);
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

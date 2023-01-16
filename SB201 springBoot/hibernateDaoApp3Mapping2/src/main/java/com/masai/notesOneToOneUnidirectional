@@ -1,0 +1,150 @@
+OneToOne:-
+=========
+--at table level,we can maintain OTO relation by taking FK as Unique.
+--here we need to use @OneToOne annotation
+
+unidirectional:-
+------------------
+(Assume one department has only one employee and one employee belongs from only one dept.)
+
+
+@Entity
+public class Department {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int deptId;
+	private String dname;
+	private String location;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Employee emp;
+
+	public int getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDname() {
+		return dname;
+	}
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Employee getEmp() {
+		return emp;
+	}
+
+	public void setEmp(Employee emp) {
+		this.emp = emp;
+	}	
+}
+
+@Entity
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int empId;
+	private String ename;
+	private int salary;
+	
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEname() {
+		return ename;
+	}
+	public void setEname(String ename) {
+		this.ename = ename;
+	}
+	public int getSalary() {
+		return salary;
+	}
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+	
+}
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		Department d1=new Department();
+		d1.setDname("Sales");
+		d1.setLocation("kolkata");
+
+		
+		Employee emp = new Employee();
+		emp.setEname("Ram");
+		emp.setSalary(8500);
+		
+		d1.setEmp(emp);
+		
+		em.getTransaction().begin();
+		
+		em.persist(d1);
+		
+		em.getTransaction().commit();
+			
+	}
+
+}
+
+--if we want to change this auto generated FK column name then we need to apply @JoinColumn anno
+
+ex:-
+
+@OneToOne
+@JoinColumn(name="eid")
+private Employee emp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

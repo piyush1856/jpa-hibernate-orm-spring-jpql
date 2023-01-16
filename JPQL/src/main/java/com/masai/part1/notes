@@ -1,0 +1,33 @@
+JPQL : Java Persistence query language.
+    -> It is defined in JPA.
+    -> We write query against entity in JPQL but in SQL we write it in Database.
+
+Query Structure :
+==================
+SELECT ... FROM ...(entity class name)
+[WHERE]
+[GROUP BY]
+[HAVING]
+[ORDER BY]
+
+DELETE FROM ... [WHERE] ...
+UPDATE SET ... WHERE ...
+
+***-> In JPQL '*' is not considered : will give exception
+       Instead we use alias support
+
+
+NAMED QUERY :
+=============
+-> when query is long and have to written multiple times, you can provide alias to query,
+    use createNamedQuery(""); to do the operations.
+
+NATIVE QUERY :
+==============
+-> It is engaged directly with the database table rather than Entity class.
+-> so we can directly write the SQL syntax.
+-> It work on table name in database rather than entity class
+
+NAMED NATIVE QUERY:
+=================
+-> Same as named query but directly work on database table and dynamic in nature.

@@ -1,0 +1,257 @@
+--in this,every Entity class of inheritence hirarchy will have its own table and these table will participate in relationship,that means every record of child table will represent one record of parent table. 
+
+--in this mode of inheritence mapping,each child record of child table maintains association with a record of parent table .
+
+--inside all the child tables we should have a FK column that reffers Pk column of parent table.
+
+
+
+--while saving data by using child class obj,the common properies data will be saved to parent table and child class properties will be saved in child table.
+
+
+
+
+Adv of table per subclasses strategy:-
+-------------------------------------------
+
+
+1.DB tables can be designed by satisfying normalization forms/rules.
+
+2.no need to take any discriminator value.
+
+3. not null constraint can be applied.
+
+
+
+@Inheritence(strategy=InheritenceType.JOINED) to mention table per child class
+
+@PrimaryKeyJoinColumn(name="PKid") to modify the FK coulmn name in the child class 
+
+
+Eg. : - 
+--------
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int eid;
+	private String name;
+	
+	public int getEid() {
+		return eid;
+	}
+	public void setEid(int eid) {
+		this.eid = eid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+
+@Entity
+public class ContractutalEmployee extends Employee{
+	
+	private int noOfWorkingDays;
+	private int costPerDay;
+	
+	public int getNoOfWorkingDays() {
+		return noOfWorkingDays;
+	}
+	public void setNoOfWorkingDays(int noOfWorkingDays) {
+		this.noOfWorkingDays = noOfWorkingDays;
+	}
+	public int getCostPerDay() {
+		return costPerDay;
+	}
+	public void setCostPerDay(int costPerDay) {
+		this.costPerDay = costPerDay;
+	}
+}
+
+@Entity
+public class SalariedEmployee extends Employee{
+	
+	private int salary;
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+}
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		Employee emp=new Employee();
+		emp.setName("Ram");
+		
+		
+		SalariedEmployee semp=new SalariedEmployee();
+		semp.setName("Mohan");
+		semp.setSalary(85000);
+		
+		ContractutalEmployee cemp=new ContractutalEmployee();
+		cemp.setName("Hari");
+		cemp.setCostPerDay(3000);
+		cemp.setNoOfWorkingDays(10);
+		
+		em.getTransaction().begin();
+		em.persist(emp);
+		em.persist(semp);
+		em.persist(cemp);
+		em.getTransaction().commit();
+		
+		
+		
+		System.out.println("done..");		
+	}
+}
+
+
+OUTPUT :
+
+mysql> show tables;
++----------------------+
+| Tables_in_mapping    |
++----------------------+
+| contractutalemployee |
+| employee             |
+| hibernate_sequence   |
+| salariedemployee     |
++----------------------+
+
+mysql> select * from employee;
++-----+-------+
+| eid | name  |
++-----+-------+
+|   1 | Ram   |
+|   2 | Mohan |
+|   3 | Hari  |
++-----+-------+
+
+
+mysql> select * from contractutalemployee;
++------------+-----------------+-----+
+| costPerDay | noOfWorkingDays | eid |
++------------+-----------------+-----+
+|       3000 |              10 |   3 |
++------------+-----------------+-----+
+
+mysql> select * from salariedemployee;
++--------+-----+
+| salary | eid |
++--------+-----+
+|  85000 |   2 |
++--------+-----+
+
+==============================================================================================================
+==============================================================================================================
+
+To change name of foreign key coloumn :
+
+Employee.java:-
+------------------
+
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+public class Employee {
+
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int empId;
+	
+	
+	private String name;
+
+
+ContractualEmployee.java:-
+---------------------------------
+
+
+@Entity
+@PrimaryKeyJoinColumn(name="emp_eid")
+public class ContractualEmployee extends Employee {
+	
+	private int noOfWorkingDays;
+	private int costPerDay;
+	
+
+}
+
+SalariedEmployee.java
+----------------------------
+
+
+@Entity
+@PrimaryKeyJoinColumn(name="emp_eid")
+public class SalariedEmployee extends Employee{
+
+	private int salary;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

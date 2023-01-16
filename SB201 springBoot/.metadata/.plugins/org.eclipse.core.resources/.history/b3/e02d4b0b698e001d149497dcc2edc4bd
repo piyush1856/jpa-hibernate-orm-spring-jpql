@@ -1,0 +1,16 @@
+package com.masai.service;
+
+import java.util.List;
+
+import com.masai.exception.UserException;
+import com.masai.model.User;
+
+public interface UserEmailService {
+	
+	public User createUser(User user) throws UserException;
+	
+	public List<User> retrieveAllUser() throws UserException;
+	
+	public User retrieveUserById(Integer id) throws UserException;
+
+}

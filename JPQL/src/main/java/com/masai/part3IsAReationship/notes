@@ -1,0 +1,153 @@
+IS-A Relationship:
+===================
+**-> Inheritance Mismatch Problem
+
+
+**-=> Some Strategy :
+
+    1. Single Table : All the entity from diff class with common parent is placed in Single Table Strategy..
+
+    2. Joined Table : Each class has its own table, query a subclass requires joining a table.
+                      column of parent class will not be populated in child table.
+
+    3. Table Per class : Every class has its own table. It don't require any join. Every column of parent class
+                         will be present in child table.
+
+    4. Mapped Super Class :
+
+
+
+
+
+**Single Table :
+=====================
+    public static void main(String[] args) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("employee");
+        EntityManager em = emf.createEntityManager();
+
+        //Book book = new Book(1,"Physics","HC Verma");
+        Pen pen = new Pen(2,"PArker","Red");
+
+        em.getTransaction().begin();
+        em.persist(pen);
+        em.getTransaction().commit();
+        em.close();
+
+    }
+
+    @Entity
+    @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+    @DiscriminatorColumn(name = "product_type",discriminatorType = DiscriminatorType.INTEGER)
+    public class Product {
+
+        @Id
+        private long productID;
+        private String name;
+
+        public Product() {
+        }
+
+        public Product(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "Product{" +
+                    "productID=" + productID +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
+
+        public Product(long productID, String name) {
+            this.productID = productID;
+            this.name = name;
+        }
+
+        public long getProductID() {
+            return productID;
+        }
+
+        public void setProductID(long productID) {
+            this.productID = productID;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    @Entity
+    @DiscriminatorValue("1")
+    public class Book extends Product{
+
+        private String author;
+
+        public Book() {
+        }
+
+        public Book(String author) {
+            this.author = author;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public void setAuthor(String author) {
+            this.author = author;
+        }
+
+        public Book(String name, String author) {
+            super(name);
+            this.author = author;
+        }
+
+        public Book(long productID, String name, String author) {
+            super(productID, name);
+            this.author = author;
+        }
+    }
+
+    @Entity
+    @DiscriminatorValue("2")
+    public class Pen extends Product{
+
+        private String color;
+
+        public Pen(long productID, String name, String color) {
+            super(productID, name);
+            this.color = color;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public Pen() {
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+    }
+
+
+
+-->
+
+
+
+
+
+
+
+
+
+
+

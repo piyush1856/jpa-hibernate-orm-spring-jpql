@@ -1,0 +1,426 @@
+
+eager and lazy loading:-
+----------------------------
+
+--by default ORM s/w (Hibernate) perform lazy loading while fetching the objs, 
+  when we fetch the parent obj(first level obj),then only the first level obj related data 
+  will be loaded into the memory,but the 2nd level  obj related data will be loaded at time
+  of calling the 2nd level object related methods.
+	 
+	 
+	ex:-
+
+Demo1.java:-
+--------------
+
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em= EMUtil.provideEntityManager();
+		
+		
+ 		Employee emp= em.find(Employee.class, 10);
+ 		
+ 		em.close();  // even though before closing the EM obj we got the Employee obj
+		//here only Employee related obj will be loaded ,address obj data will be not be loaded
+			//so while fetching the address related data we will get an exception
+		
+ 		System.out.println(emp.getEid());
+ 		System.out.println(emp.getEname());
+ 		System.out.println(emp.getSalary());
+ 		
+ 		System.out.println("All Address are:-");
+ 		
+ 		System.out.println("===========================");
+ 		Set<Address> addreses= emp.getAddresses();
+ 		
+ 		for(Address ad:addreses){
+ 			System.out.println("city :"+ad.getCity());
+ 			System.out.println("state :"+ad.getState());
+ 			System.out.println("Pincode :"+ad.getPincode());
+ 			
+ 			System.out.println("***************************");
+ 		}
+		
+		System.out.println("done...");
+	}
+
+}
+
+
+--to solve the above problem we need to use Eager loading:-
+
+ex:-
+
+Employee.java:-
+------------------
+
+@Entity
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int eid;
+	private String ename;
+	private int salary;
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Embedded
+	@JoinTable(name="empaddress",joinColumns=@JoinColumn(name="emp_id"))
+	private Set<Address> addresses=new HashSet<Address>();
+--
+--
+	
+}
+
+==========================================================================================
+
+Association Mismatch :- table relationship problem : 
+-----------------------------------------------------
+ 
+**kind of relationship in table :
+ 	one to one
+ 	one to many
+ 	many to many
+ 	
+
+ 	---to access the meaningfull information from the multiple tables we need to establish the relationship.
+
+--these relationship enable us to navigate from one table record to another table records.
+
+--to navigate from one table to another table,our tables must be in a relationship.
+
+
+
+--when tables in the relationship then the Entity classes which represents the tables should also be in the relationships accordingly. so that objs of these classes should also be in a relationship .
+
+-- so we can navigate from one obj details to another obj details.
+
+
+--JPA supports the relationship bt the Entity classes not only with the cardinality but also with the 
+direction
+
+--uni-directional and bi-directional is the another classification of relationship.
+
+---in uni-direc, we can define child Entity obj inside the parent Entity , or parent Entity reff inside the 
+child Entity , but both are not possible.
+
+Parent class : child class 
+Parent Entity : Child Entity
+Dept class     :  Employee class
+
+--with this relation, we can access the child class obj from parent obj or parent class obj from the 
+child class obj, both not possible at a time.
+
+--in bi-directional :- we define child Entity obj inside the parent Entity and parent Entity obj inside the 
+child Entity,(navigation is possible from the either one of the any obj)
+
+so JPA supports 4 types of relationships:-
+
+
+1.one to one
+2.one to many
+3.many to one
+4.many to many (it is by defualt bi-directional only)
+
+
+One to many unidirectional : 
+==================================
+@Entity
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int empId;
+	private String name;
+	private int salary;
+	
+	
+	
+	
+	
+	public Employee(int empId, String name, int salary) {
+		super();
+		this.empId = empId;
+		this.name = name;
+		this.salary = salary;
+	}
+
+	public Employee(String name, int salary) {
+		super();
+		this.name = name;
+		this.salary = salary;
+	}
+
+	public int getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [empId=" + empId + ", name=" + name + ", salary=" + salary + "]";
+	}
+
+	public Employee() {
+		super();
+	}
+
+}
+
+
+@Entity
+public class Department {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int deptId;
+	private String dname;
+	private String location;
+	
+	//it is the extra property to maintain OneToMamy relationship
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="dept_emp",joinColumns=@JoinColumn(name="did"),inverseJoinColumns=@JoinColumn(name="eid"))
+	private List<Employee> emps=new ArrayList<Employee>();
+
+	
+	
+	public Department(String dname, String location, List<Employee> emps) {
+		super();
+		this.dname = dname;
+		this.location = location;
+		this.emps = emps;
+	}
+
+	public Department() {
+		super();
+	}
+
+	public Department(int deptId, String dname, String location, List<Employee> emps) {
+		super();
+		this.deptId = deptId;
+		this.dname = dname;
+		this.location = location;
+		this.emps = emps;
+	}
+
+	public int getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDname() {
+		return dname;
+	}
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public List<Employee> getEmps() {
+		return emps;
+	}
+
+	public void setEmps(List<Employee> emps) {
+		this.emps = emps;
+	}
+
+	@Override
+	public String toString() {
+		return "Department [deptId=" + deptId + ", dname=" + dname + ", location=" + location + ", emps=" + emps + "]";
+	}	
+	
+}
+
+
+public class Demo {
+	
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		Employee emp1 = new Employee("Piyush5", 1001);
+		Employee emp2 = new Employee("Piyush6", 1002);
+		
+		Department dept = new Department();
+		dept.setDname("Finance");
+		dept.setLocation("Mumbai");
+		
+		dept.getEmps().add(emp1);
+		dept.getEmps().add(emp2);
+		
+		
+		em.getTransaction().begin();
+		
+		//if used cascading all the emp will automatically be persisted
+//		em.persist(emp1);
+//		em.persist(emp2);
+		em.persist(dept);
+		
+		em.getTransaction().commit();
+		em.close();		
+		
+	}
+
+}
+
+
+public class Demo2 {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		//adding one more employee
+		
+//		Department dept = em.find(Department.class, 7);
+//		
+//		Employee emp = new Employee("Mukesh", 45697);
+//		
+//		em.getTransaction().begin();
+//		dept.getEmps().add(emp);
+//		em.getTransaction().commit();
+//		
+//		em.close();
+		
+		
+		
+		//getting all the employee from a department name;
+		
+//		String jpql= "select emps from Department where dname='Finance'";
+//		
+//		Query q= em.createQuery(jpql);
+//		
+//		List<Employee> allemps= q.getResultList();
+//	
+//		System.out.println(allemps);
+		
+		
+		String jpql= "from Department where dname= :dn";
+		
+		TypedQuery<Department> q= em.createQuery(jpql,Department.class);
+		q.setParameter("dn", "Finance");
+		
+		Department dept = q.getSingleResult();
+	
+		System.out.println(dept.getLocation());
+		dept.getEmps().forEach(e -> System.out.println(e));;
+		
+		
+	
+		
+		
+	}
+
+}
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 	 
+ 	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 

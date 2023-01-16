@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="MavenProjectWizardLocationPage">
+		<list key="location">
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\_1Mock\GymApplication"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\RatanSirLiveSprint-4\day2SpringBoot1"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\RatanSirLiveSprint-4\day1Live"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\sprintEval3_Question-1"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\springEval3_Question-3"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\assingmentWeek3Day4"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\assingmentWeek3Day3"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\assingmentWeek3Day2"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\_3Annotations\annotations"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\_2Spring Core Module"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\Spring Framework\_1Introduction\coupling"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\Evaluation\sprint2EvaluationQuestion3"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\Evaluation\sprint2EvalutionQuestion2"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\Evaluation\sprint2EvalutionQuestion1"/>
+			<item value="C:\Users\piyus\OneDrive\Desktop\SB201 springBoot\assignmentDay7"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArchetypePage">
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="Maven2ProjectWizardArchifactPage">
+		<list key="package">
+		</list>
+		<list key="groupId">
+		</list>
+		<list key="artifactId">
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArtifactPage">
+		<list key="groupId">
+			<item value="com.masai"/>
+		</list>
+		<list key="name">
+		</list>
+		<list key="artifactId">
+			<item value="GymApplication"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+	<section name="org.eclipse.m2e.core.ui.internal.dialogs.MavenRepositorySearchDialog">
+		<item key="width" value="480"/>
+		<item key="height" value="667"/>
+		<item key="x" value="1296"/>
+		<item key="y" value="70"/>
+	</section>
+</section>

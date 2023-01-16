@@ -1,0 +1,46 @@
+limitation of EM methods in performing CRUD operations:-
+----------------------------------------------------------------------
+
+persist();
+find()
+merge();
+remove();
+
+
+
+1.Retrieving Entity obj based on only ID field(PK field) @Id
+
+2.multiple Entity obj retrival is not possible (multiple record)
+
+3.bulk update and bulk delete is also not possible
+
+4.to access Entity obj we can not specify some extra condition.
+
+
+--to overcome the above limitation JPA has provided JPQL (java persistence query language).
+
+
+JPQL:
+=====
+
+
+
+similarities bt JPQL and sql:-
+----------------------------------
+
+--keywords in the both the langauges are case insensetive
+
+--GROUP BY,ORDER BY,where clause r similar
+
+--aggregrate function r similar
+
+--the way we express the condition to perform the CRUD operation is almost simmilar.
+
+
+diff bt JPQL and sql:-
+--------------------------
+--sql queries are expressed in the term of table and columns, where as jpql query is expressed in the term of Entity class names and its variables.
+
+--the name of the class and its variables are case sensitive.
+
+--sql is not portable across multiple dbms, where jpql is portable.

@@ -1,0 +1,43 @@
+package com.masai.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.exception.AuthenticationException;
+import com.masai.model.Fir;
+import com.masai.model.LogInDTO;
+import com.masai.model.User;
+import com.masai.model.UserSession;
+import com.masai.repository.FirRepo;
+import com.masai.repository.SessionRepo;
+import com.masai.repository.UserRepo;
+
+@Service
+public class LoginServiceImpl implements LoginService{
+	
+	@Autowired
+	private SessionRepo sRepo;
+	
+	@Autowired
+	private UserRepo uRepo;
+	
+	@Autowired
+	private FirRepo fRepo;
+
+	@Override
+	public String logIntoAccount(LogInDTO dto) throws AuthenticationException {
+		
+		
+		
+		return null;
+	}
+
+	@Override
+	public String logOutFromAccount(String key) throws AuthenticationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+}

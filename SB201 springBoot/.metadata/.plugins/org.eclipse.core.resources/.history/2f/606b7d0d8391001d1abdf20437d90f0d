@@ -1,0 +1,27 @@
+package com.masai.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.model.Fir;
+import com.masai.model.User;
+import com.masai.model.UserSession;
+import com.masai.repository.FirRepo;
+import com.masai.repository.SessionRepo;
+import com.masai.repository.UserRepo;
+
+@Service
+public class LoginServiceImpl implements LoginService{
+	
+	@Autowired
+	private SessionRepo sRepo;
+	
+	@Autowired
+	private UserRepo uRepo;
+	
+	@Autowired
+	private FirRepo fRepo;
+	
+	
+
+}

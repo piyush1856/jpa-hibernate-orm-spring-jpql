@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1669269189828_0" label="Java Main Sources" name="Java Main Sources"/>
+<workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1669269189848_1" label="Java Test Sources" name="Java Test Sources"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1669631459315_4" label="sprint2Evaluation" name="sprint2Evaluation">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sprint2EvalutionQuestion1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sprint2EvalutionQuestion2" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sprint2EvaluationQuestion3" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1669792538707_5" label="springFramework" name="springFramework">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/springCore" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/annotations" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/assingmentWeek3Day2" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/assingmentWeek3Day3" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/assingmentWeek3Day4" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/springEval3_Question-3" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/sprintEval3_Question-1" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1670340909478_7" label="RatanSirLive" name="RatanSirLive">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/day1Live" type="4"/>
+<item elementID="=day2SpringBoot_Intro" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day2SpringBoot_RestApp_1" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day4SpringBoot_App2" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day2Assingment" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day3Assingment" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day5SpringBoot_Validation_App3" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day5SpringBootDataJPA_App4" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day4Assingment" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=day5Assingment" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1673073595766_9" label="Mock" name="Mock">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/GymApplication" type="4"/>
+<item elementID="=EmailUserApp" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=MasaiFirApplication" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1669269191516_2" label="Window Working Set" name="Aggregate for window 1669269191516"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1669945238038_6" label="Multiple Working Sets" name="Aggregate:Java Main Sources:Java Test Sources:springFramework:sprint2Evaluation:">
+<workingSet IMemento.internal.id="Java Main Sources"/>
+<workingSet IMemento.internal.id="Java Test Sources"/>
+<workingSet IMemento.internal.id="springFramework"/>
+<workingSet IMemento.internal.id="sprint2Evaluation"/>
+</workingSet>
+<mruList name="RatanSirLive"/>
+</workingSetManager>

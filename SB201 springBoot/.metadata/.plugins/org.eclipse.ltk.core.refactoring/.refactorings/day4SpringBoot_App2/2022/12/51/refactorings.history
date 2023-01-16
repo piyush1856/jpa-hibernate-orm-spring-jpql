@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;MyErrorDetails.java&apos; to &apos;day5SpringBoot_Validation_App3/src/main/java/com.masai&apos;&#x0D;&#x0A;- Original project: &apos;day4SpringBoot_App2&apos;&#x0D;&#x0A;- Destination element: &apos;day5SpringBoot_Validation_App3/src/main/java/com.masai&apos;&#x0D;&#x0A;- Original element: &apos;com.masai.exception.MyErrorDetails.java&apos;" description="Copy compilation unit" destination="=day5SpringBoot_Validation_App3/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.masai" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.masai.exception{MyErrorDetails.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1670753407536" units="1" version="1.0"/>
+</session>

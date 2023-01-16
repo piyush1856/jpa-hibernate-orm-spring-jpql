@@ -1,0 +1,93 @@
+package com.masai.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.exception.FirException;
+import com.masai.exception.UserException;
+import com.masai.model.Fir;
+import com.masai.model.User;
+import com.masai.model.UserSession;
+import com.masai.repository.FirRepo;
+import com.masai.repository.SessionRepo;
+import com.masai.repository.UserRepo;
+
+@Service
+public class UserServiceImpl implements UserService{
+	
+	@Autowired
+	private SessionRepo sRepo;
+	
+	@Autowired
+	private UserRepo uRepo;
+	
+	@Autowired
+	private FirRepo fRepo;
+
+	
+	
+	@Override
+	public User registerUser(User user) throws UserException {
+		
+		User existingCustomer = uRepo.findByMobileNumber(user.getMobileNumber());
+			
+		 if(existingCustomer!=null) {
+			 throw new UserException("Customer already exist with emailId : "+user.getMobileNumber());
+			 
+		 }
+		 return uRepo.save(user);
+	}
+
+	
+	
+	@Override
+	public List<Fir> getFirList(Integer user_id , String key) throws UserException, FirException {
+		
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null ){
+			throw new UserException("Kindly login to continue");
+		}
+		
+		List<Fir> firList = uRepo.findById(user_id)
+							.get().getFirList();
+		
+		if(firList.size() ==0) {
+			throw new FirException("No fir found");
+		}
+		
+		return firList;
+	
+	}
+
+
+
+	@Override
+	public String deleteFir(Integer userId, Integer firId, String key) throws UserException, FirException {
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null ){
+			throw new UserException("Kindly login to continue");
+		}
+		
+		Optional<Fir> opt = fRepo.findById(firId);
+		
+		if(opt.isEmpty()) {
+			throw new FirException("Fir not found");
+		}
+		
+		opt.get().setUserList(null);
+		
+		fRepo.save(opt.get());
+		
+		fRepo.delete(opt.get());
+		
+		return "deleted" + opt.get();
+		
+		
+	}
+
+}

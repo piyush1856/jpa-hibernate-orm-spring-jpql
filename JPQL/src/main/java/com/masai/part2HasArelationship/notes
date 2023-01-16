@@ -1,0 +1,24 @@
+HAS-A Mapping And IS-A Mapping :
+==================================
+
+- person class has a relation with address class. (HAS-A b/w two class)
+- IS-A -> Inheritance
+
+**-> On object we have has-A relationship but at table level we don't have this kind of any relationship.
+     This a mismatch.
+     This is mismatch is called Granularity Mismatch.
+
+
+==> How can we do that ?
+    @Embedded keyword
+
+
+
+
+
+
+
+
+
+
+

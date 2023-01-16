@@ -1,0 +1,203 @@
+
+
+@Entity
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int empId;
+	private String name;
+	private int salary;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="did")
+	private Department dept;
+	
+	
+	
+	public Department getDept() {
+		return dept;
+	}
+
+	public void setDept(Department dept) {
+		this.dept = dept;
+	}
+
+	public Employee(int empId, String name, int salary) {
+		super();
+		this.empId = empId;
+		this.name = name;
+		this.salary = salary;
+	}
+
+	public Employee(String name, int salary) {
+		super();
+		this.name = name;
+		this.salary = salary;
+	}
+
+	public int getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [empId=" + empId + ", name=" + name + ", salary=" + salary + ", dept=" + dept + "]";
+	}
+
+	public Employee() {
+		super();
+	}
+
+}
+
+
+
+@Entity
+public class Department {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int deptId;
+	private String dname;
+	private String location;
+	
+
+	
+	
+	public Department(String dname, String location) {
+		super();
+		this.dname = dname;
+		this.location = location;
+	
+	}
+
+	public Department() {
+		super();
+	}
+
+	public Department(int deptId, String dname, String location) {
+		super();
+		this.deptId = deptId;
+		this.dname = dname;
+		this.location = location;
+		
+	}
+
+	public int getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDname() {
+		return dname;
+	}
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	
+
+	@Override
+	public String toString() {
+		return "Department [deptId=" + deptId + ", dname=" + dname + ", location=" + location + "]";
+	}	
+	
+}
+
+public class Demo {
+	
+	
+	public static void main(String[] args) {
+		
+		EntityManager em=EMUtil.provideEntityManager();
+		
+		Department dept=new Department();
+		dept.setDname("Sales");
+		dept.setLocation("mumbai");
+		
+		Employee emp1=new Employee();
+		emp1.setName("ram");
+		emp1.setSalary(7800);
+		emp1.setDept(dept);
+		
+		Employee emp2=new Employee();
+		emp2.setName("ramesh");
+		emp2.setSalary(8850);
+		emp2.setDept(dept);
+		
+		
+		em.getTransaction().begin();
+		
+		em.persist(emp1);
+		em.persist(emp2);
+		
+		em.getTransaction().commit();
+		
+		System.out.println("done...");
+		
+	}
+
+}
+
+
+public class Demo {
+	
+	
+	public static void main(String[] args) {
+		
+		EntityManager em=EMUtil.provideEntityManager();
+		
+		Employee emp= em.find(Employee.class, 3);
+		
+		Department dept= emp.getDept();
+		
+		System.out.println(dept.getDeptId());
+		System.out.println(dept.getDname());
+		System.out.println(dept.getLocation());
+		
+		em.close();
+		
+	}
+
+}
+
+
+
+
+
+
+
+

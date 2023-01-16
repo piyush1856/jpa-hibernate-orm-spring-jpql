@@ -1,0 +1,18 @@
+package com.masai.model;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class UserSession {
+	
+	@Id
+	private Integer user_id;
+	private String uuid;
+	private LocalDateTime logindateTime;
+	
+
+}

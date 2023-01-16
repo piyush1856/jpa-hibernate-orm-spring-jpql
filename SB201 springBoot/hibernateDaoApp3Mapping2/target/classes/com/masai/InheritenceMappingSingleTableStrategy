@@ -1,0 +1,264 @@
+
+
+1.one table for entire hirarchy/Single table:
+----------------------------------------------------
+
+--this strategy is the default strategy in HB to perform the inheritance mapping
+
+here we will take a single table with  the all the columns, corresponding to generalized properties of super class and specialized
+properties for all the sub classes and one extra discriminator column.
+
+--with the help of this discriminator value DB table maintains which Entity class of the inheritence hirarcy  inserting the record.
+
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int eid;
+	private String name;
+	
+	public int getEid() {
+		return eid;
+	}
+	public void setEid(int eid) {
+		this.eid = eid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+
+
+@Entity
+public class ContractutalEmployee extends Employee{
+	
+	private int noOfWorkingDays;
+	private int costPerDay;
+	
+	public int getNoOfWorkingDays() {
+		return noOfWorkingDays;
+	}
+	public void setNoOfWorkingDays(int noOfWorkingDays) {
+		this.noOfWorkingDays = noOfWorkingDays;
+	}
+	public int getCostPerDay() {
+		return costPerDay;
+	}
+	public void setCostPerDay(int costPerDay) {
+		this.costPerDay = costPerDay;
+	}
+}
+
+
+@Entity
+public class SalariedEmployee extends Employee{
+	
+	private int salary;
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+}
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		Employee emp=new Employee();
+		emp.setName("Ram");
+		
+		
+		SalariedEmployee semp=new SalariedEmployee();
+		semp.setName("Mohan");
+		semp.setSalary(85000);
+		
+		ContractutalEmployee cemp=new ContractutalEmployee();
+		cemp.setName("Hari");
+		cemp.setCostPerDay(3000);
+		cemp.setNoOfWorkingDays(10);
+		
+		em.getTransaction().begin();
+		em.persist(emp);
+		em.persist(semp);
+		em.persist(cemp);
+		em.getTransaction().commit();
+		
+		
+		
+		System.out.println("done..");		
+	}
+}
+
+output : 
++----------------------+-----+-------+--------+------------+-----------------+
+| DTYPE                | eid | name  | salary | costPerDay | noOfWorkingDays |
++----------------------+-----+-------+--------+------------+-----------------+
+| Employee             |   1 | Ram   |   NULL |       NULL |            NULL |
+| SalariedEmployee     |   2 | Mohan |  85000 |       NULL |            NULL |
+| ContractutalEmployee |   3 | Hari  |   NULL |       3000 |              10 |
++----------------------+-----+-------+--------+------------+-----------------+
+
+--here one single table is created with all columns (for all the properties of super class Entity and all the proeperties of all the sub class Entities) plus one extra column DTYPE, which represents which class has made the entry. 
+
+--we can change this DTYPE column name and its corresponding value as follows:
+
+======================================================================================================
+======================================================================================================
+
+@Discriminator :
+=================
+
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="emptype",discriminatorType=DiscriminatorType.STRING)//you can also take Integer but ..
+@DiscriminatorValue(value="emp") // here we have to take Integer value (value="1")
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int eid;
+	private String name;
+	
+	public int getEid() {
+		return eid;
+	}
+	public void setEid(int eid) {
+		this.eid = eid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+
+
+
+
+@Entity
+@DiscriminatorValue(value="contEmp")
+public class ContractutalEmployee extends Employee{
+	
+	private int noOfWorkingDays;
+	private int costPerDay;
+	
+	public int getNoOfWorkingDays() {
+		return noOfWorkingDays;
+	}
+	public void setNoOfWorkingDays(int noOfWorkingDays) {
+		this.noOfWorkingDays = noOfWorkingDays;
+	}
+	public int getCostPerDay() {
+		return costPerDay;
+	}
+	public void setCostPerDay(int costPerDay) {
+		this.costPerDay = costPerDay;
+	}
+}
+
+
+
+@Entity
+@DiscriminatorValue(value="salEmp")
+public class SalariedEmployee extends Employee{
+	
+	private int salary;
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+}
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		Employee emp=new Employee();
+		emp.setName("Ram");
+		
+		
+		SalariedEmployee semp=new SalariedEmployee();
+		semp.setName("Mohan");
+		semp.setSalary(85000);
+		
+		ContractutalEmployee cemp=new ContractutalEmployee();
+		cemp.setName("Hari");
+		cemp.setCostPerDay(3000);
+		cemp.setNoOfWorkingDays(10);
+		
+		em.getTransaction().begin();
+		em.persist(emp);
+		em.persist(semp);
+		em.persist(cemp);
+		em.getTransaction().commit();
+		
+		
+		
+		System.out.println("done..");		
+	}
+}
+Output : emp,sal,emp,contEmp
++---------+-----+-------+--------+------------+-----------------+
+| emptype | eid | name  | salary | costPerDay | noOfWorkingDays |
++---------+-----+-------+--------+------------+-----------------+
+| emp     |   1 | Ram   |   NULL |       NULL |            NULL |
+| salEmp  |   2 | Mohan |  85000 |       NULL |            NULL |
+| contEmp |   3 | Hari  |   NULL |       3000 |              10 |
++---------+-----+-------+--------+------------+-----------------+
+
+
+
+Note:-the limitation of the above strategy is :-
+
+1.designing a table with huge number of column is not recommended,against the rule of normalizations.
+
+2.with the above strategy,we can not apply not null to the columns
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

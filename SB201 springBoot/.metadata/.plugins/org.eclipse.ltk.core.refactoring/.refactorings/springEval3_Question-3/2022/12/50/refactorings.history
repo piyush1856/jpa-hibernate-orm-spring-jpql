@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.masai.appConfig&apos; to &apos;AppConfig&apos;&#x0D;&#x0A;- Original project: &apos;springEval3_Question-3&apos;&#x0D;&#x0A;- Original element: &apos;com.masai.appConfig&apos;&#x0D;&#x0A;- Renamed element: &apos;com.masai.AppConfig&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;appConfig&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.masai{appConfig.java[appConfig" matchStrategy="1" name="AppConfig" qualified="false" references="true" similarDeclarations="false" stamp="1670233509026" textual="false" version="1.0"/>
+</session>

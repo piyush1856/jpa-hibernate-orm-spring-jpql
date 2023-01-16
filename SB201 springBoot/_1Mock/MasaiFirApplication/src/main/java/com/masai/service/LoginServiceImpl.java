@@ -1,0 +1,76 @@
+package com.masai.service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.exception.AuthenticationException;
+import com.masai.model.Fir;
+import com.masai.model.LogInDTO;
+import com.masai.model.User;
+import com.masai.model.UserSession;
+import com.masai.repository.FirRepo;
+import com.masai.repository.SessionRepo;
+import com.masai.repository.UserRepo;
+
+import net.bytebuddy.utility.RandomString;
+
+@Service
+public class LoginServiceImpl implements LoginService{
+	
+	@Autowired
+	private SessionRepo sRepo;
+	
+	@Autowired
+	private UserRepo uRepo;
+	
+	@Autowired
+	private FirRepo fRepo;
+
+	@Override
+	public String logIntoAccount(LogInDTO dto) throws AuthenticationException {
+		
+		User existingUser = uRepo.findByMobileNumber(dto.getMobileNumber());
+		
+		if(existingUser == null) {
+			 throw new AuthenticationException("Invalid Email Id");
+		}
+		
+		Optional<UserSession> userSession = sRepo.findById(existingUser.getUser_id());
+		
+		 if(userSession.isPresent()) {
+			 throw new AuthenticationException("Customer is already logged in");
+		 }
+		 
+		 
+		 if(! existingUser.getPassword().equals(dto.getPassword())) {
+			 throw new AuthenticationException("Invalid password");			 
+		 }
+		
+		 String key = RandomString.make(6);
+		 UserSession session = new UserSession(existingUser.getUser_id(), key, LocalDateTime.now());
+		 
+		 sRepo.save(session);
+		 
+		 return "Logged In Successful.. " + session.toString();
+	}
+
+	@Override
+	public String logOutFromAccount(String key) throws AuthenticationException {
+		UserSession session = sRepo.findByUuid(key);
+		
+		if(session == null) {
+			throw new AuthenticationException("User is not logged in with this account");
+		}
+		
+		sRepo.delete(session);
+		
+		return "Logged Out Successfully... " + session.getLogindateTime();
+	}
+	
+	
+	
+
+}

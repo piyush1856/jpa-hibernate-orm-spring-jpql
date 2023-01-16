@@ -1,0 +1,60 @@
+package com.masai.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.exception.UserException;
+import com.masai.model.User;
+import com.masai.repository.EmailRepo;
+import com.masai.repository.UserRepo;
+
+@Service
+public class UserEmailServiceImpl implements UserEmailService{
+	
+	@Autowired
+	private UserRepo uRepo;
+	
+	@Autowired
+	private EmailRepo eRepo;
+
+	@Override
+	public User createUser(User user) throws UserException {
+		
+		return uRepo.save(user);
+		
+	}
+
+	@Override
+	public List<User> retrieveAllUser() throws UserException {
+		
+		List<User> list = uRepo.findAll();
+		
+		if(list.size() ==0) {
+			throw new UserException("No user found");
+		}
+		
+		return list;
+	}
+
+	@Override
+	public User retrieveUserById(Integer id) throws UserException {
+		
+		return uRepo.findById(id).orElseThrow(() -> new UserException("user not found .."));
+	}
+	
+	@Override
+	public User deleteUserById(Integer id) throws UserException {
+		
+		User user = uRepo.findById(id).orElseThrow(() -> new UserException("user not found .."));
+		
+		uRepo.delete(user);
+
+		return user;
+	}
+	
+	
+	
+
+}

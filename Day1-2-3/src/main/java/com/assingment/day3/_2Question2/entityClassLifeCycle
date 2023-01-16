@@ -1,0 +1,28 @@
+
+ Entity Class Life Cycle ->
+ =========================
+        An entity class cycle is a process of performing crud operation on database with the help JPA. The stages of
+        entity class life cycle is as follows :
+
+        1. New Stage/ Transient Stage
+        2. Persistence Stage
+        3. Datached Stage
+
+        1. New Stage -> If we create an object class and this class is not attached to the EntityManager object then
+                          this Stage is known as new Stage
+                        ex.  Employee emp = new Employee(1,"ramesh",43200");
+
+        2. Persistence Stage -> When we assign our Persistence class object with the EntityManager object. then this object
+                                will be in a persistence Stage. In this stage our object will be sync with the database table.
+                                 We can't change anything in transactional area.
+
+        3. Detached stage -> When we call the close() method or call the clear() method on the EntityManager object, then
+                              all the associated entity will be in a detached state. In this stage, the entity objects will
+                              be in sync with the table.
+
+
+        These three stages together make a cycle like first if we call get method then we will go direct in persistence
+        stage and if we will call persist or save or saveOrUpdate or update method then object will be in Transient stage
+        and after that persistence stage. After that we can call close or clear method to go for detached stage and again
+        coming for persist stage we can call merge method or lock method. So like that we can move one stage to another
+        stage and cycle called as a Entity Class cycle.

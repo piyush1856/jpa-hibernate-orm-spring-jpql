@@ -1,0 +1,31 @@
+Q2/- What is the POM, Explain the basic properties of the pom.xml file in Maven based
+application.
+
+
+POM stands for Project Object Model.
+The pom.xml file contains information of project and configuration
+information for the maven to build the project such as dependencies, build directory, source directory, test source
+directory, plugin, goals etc.
+
+Maven reads the pom.xml file, then executes the goal.
+
+****We mainly have to write all the dependencies and properties in pom.xml file in order to use maven based repository
+    and features.
+    eg : <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>8.0.31</version>
+        </dependency>
+
+    It defines the following properties for a project :
+    1.Name
+    2.Version
+    3.Packaging
+    4.Dependencies
+    5.Plugins
+
+
+*** In this model entire application will be considered as an object.
+*** If we add any dependencies in pom.xml file, then respective file/document gets downloaded automatically in local
+    storage (.m2 folder) and need not to be downloaded again.
+
