@@ -1,0 +1,188 @@
+Q1/- Explain the Java-based MVC architecture in Web application development ?
+
+MVC is an architecture that separates business logic, presentation and data.
+
+M stands for Model
+V stands for View
+C stands for controller.
+
+MVC is a systematic way to use the application where the flow starts from the view
+layer, where the request is raised and processed in controller layer and sent to model
+layer to insert data and get back the success or failure message.
+
+VIEW --> CONTROLLER --> MODEL --> DATABASE
+
+Model Layer
+This is the data layer which consists of the business logic of the system.
+It consists of all the data of the application.
+It also represents the state of the application.
+It consists of classes which have the connection to the database.
+The controller connects with model and fetches the data and sends to the view
+layer.
+The model connects with the database as well and stores the data into a database
+which is connected to it.
+
+
+View Layer
+This is a presentation layer.
+It consists of HTML, JSP, etc. into it.
+It normally presents the UI of the application.
+It is used to display the data which is fetched from the controller which in turn
+fetching data from model layer classes.
+This view layer shows the data on UI of the application.
+
+
+Controller Layer
+It acts as an interface between View and Model.
+It intercepts all the requests which are coming from the view layer.
+It receives the requests from the view layer and processes the requests and does
+the necessary validation for the request.
+This requests is further sent to model layer for data processing, and once the
+request is processed, it sends back to the controller with required information and
+displayed accordingly by the view.
+
+========================================================================================================================
+========================================================================================================================
+
+Q2/- How Spring-MVC simplifies Java-based Web application development.
+
+A Spring MVC is a Java framework which is used to build web applications. It follows
+the Model-View-Controller design pattern. It implements all the basic features of a core
+spring framework like Inversion of Control, Dependency Injection.
+A Spring MVC provides an elegant solution to use MVC in spring framework by the help
+of DispatcherServlet. Here, DispatcherServlet is a class that receives the incoming
+request and maps it to the right resource such as controllers, models, and views.
+
+
+Model - A model contains the data of the application. A data can be a single object
+or a collection of objects.
+
+Controller - A controller contains the business logic of an application. Here, the
+@Controller annotation is used to mark the class as the controller.
+
+View - A view represents the provided information in a particular format. Generally,
+JSP+JSTL is used to create a view page. Although spring also supports other view
+technologies such as Apache Velocity, Thymeleaf and FreeMarker.
+
+Front Controller - In Spring Web MVC, the DispatcherServlet class works as the
+front controller. It is responsible to manage the flow of the Spring MVC application.
+
+
+all the incoming request is intercepted by the
+DispatcherServlet that works as the front controller.
+The DispatcherServlet gets an entry of handler mapping from the XML file and
+forwards the request to the controller.
+The controller returns an object of ModelAndView.
+The DispatcherServlet checks the entry of view resolver in the XML file and invokes
+the specified view component
+
+========================================================================================================================
+========================================================================================================================
+
+Q3/- What is the role of ServletContainer in web application development?
+
+
+all the incoming request is intercepted by the
+DispatcherServlet that works as the front controller.
+The DispatcherServlet gets an entry of handler mapping from the XML file and
+forwards the request to the controller.
+The controller returns an object of ModelAndView.
+The DispatcherServlet checks the entry of view resolver in the XML file and invokes
+the specified view component
+
+
+Servlet technology is used to create a web application (resides at server side and
+generates a dynamic web page).
+Servlet is a class that extends the capabilities of the servers and responds to the
+incoming requests. It can respond to any requests.
+Servlet is a web component that is deployed on the server to create a dynamic web
+page.
+
+========================================================================================================================
+========================================================================================================================
+
+Q4/- Write a small note on Servlet and JSP.
+
+Servelet : 
+Java EE web components are either servlets or web pages created using JavaServer
+Faces technology and/or JSP technology (JSP pages). Servlets are Java programming
+language classes that dynamically process requests and construct responses. JSP
+pages are text-based documents that execute as servlets but allow a more natural
+approach to creating static content. JavaServer Faces technology builds on servlets
+and JSP technology and provides a user interface component framework for web
+applications.
+Static HTML pages and applets are bundled with web components during application
+assembly but are not considered web components by the Java EE specification. Serverside utility classes can also be bundled with web components and, like HTML pages,
+are not considered web components.
+As shown in below image, the web tier, like the client tier, might include a JavaBeans
+component to manage the user input and send that input to enterprise beans running in
+the business tier for processing.
+A Web component is nothing more than a software component that services an
+incoming HTTP request and provides some kind of (hopefully valid) response.
+Most if not all Java Web frameworks are built upon the core Java servlets technology. A
+servlet is a persistent piece of code that receives an abstraction of an HTTP request
+and gives an HTTP response.
+
+
+JSP :
+JSP technology is used to create web application just like Servlet technology. It can be
+thought of as an extension to Servlet because it provides more functionality than servlet
+such as expression language, JSTL, etc.
+A JSP page consists of HTML tags and JSP tags. The JSP pages are easier to maintain
+than Servlet because we can separate designing and development. It provides some
+additional features such as Expression Language, Custom Tags, etc.
+JSP technology is the extension to Servlet technology. We can use all the features of
+the Servlet in JSP. In addition to, we can use implicit objects, predefined tags,
+expression language and Custom tags in JSP, that makes JSP development easy
+
+========================================================================================================================
+========================================================================================================================
+Q5/ What do you mean by Webservices, Explain the similarities and differences between a
+Web application and Webservices.
+
+
+
+A Web Service is can be defined by following ways:
+It is a client-server application or application component for communication.
+The method of communication between two devices over the network.
+It is a software system for the interoperable machine to machine communication.
+It is a collection of standards or protocols for exchanging information between two
+devices or application.
+As you can see in the figure, Java, .net, and PHP applications can communicate with
+other applications through web service over the network. For example, the Java
+application can interact with Java, .Net, and PHP applications. So web service is a
+language independent way of communication.
+
+
+
+Similarities/differences bt Webapplication and Webservice:
+===============================================
+
+---WS is also a type of WA, that can generate dynamic result as raw data(json, xml, text) instead of generating a html response (webpage)
+
+--WA generates the view(webpage) whereas WS generates raw data.
+
+--this raw data generated by the WS can be reused inside any other WA or any other type of application developed in any technology.
+
+Indigo -----> html   (Webapplication) : it is for enduser
+            -----> raw data (Webservices)  :- it is for any other application
+Yatra 
+ :----------Webapplication 
+
+
+--in traditional web app, all the activity will be taken care by the Servlet.
+-- with the traditional web app, if multiple request comes to a servlet, it will be the burden to the servlet to maintain all the logics.
+
+--to simplify the role of servlet, sun-micosystem has introduced another technology called JSP.
+
+--initialy JSP invented to replace the Servlet, but very soon developers realised that instead of replacing the Servlet with JSP, JSP should complement the Servlet. and Sun-microsystem has invented a pattern called MVC patten to simplify the Java based Webapplication.
+
+
+--In traditional mvc based webapplication developers need to write the Servlet class which will have all the flow control logic and configure that servlet inside our application.
+
+--whereas in spring-mvc framework developers need not  develop any Servlet class, instead Spring-mvc f/w has given a Servlet which will have all the flow control logic. (DispatcherServlet)
+
+
+
+
+

@@ -1,0 +1,122 @@
+Q1/- Write down some of the HTTP request, and response headers ?
+
+The HTTP headers for a server's response contain information that a client can use to
+find out more about the response, and about the server that sent it. This information can
+assist the client with displaying the response to a user, with storing (or caching) the
+response for future use, and with making further requests to the server now or in the
+future. For example, the following series of headers tell the client when the response
+was sent, that it was sent by CICS®, and that it is a JPEG image:
+
+Date: Thu, 09 Dec 2004 12:07:48 GMT
+Server: IBM_CICS_Transaction_Server/3.1.0(zOS)
+Content-type: image/jpg
+
+In the case of an unsuccessful request, headers can be used to tell the client what it
+must do to complete its request successfully.
+An empty line (that is, a CRLF alone) is placed in the response message after the series
+of HTTP headers, to divide the headers from the message body.
+
+http request headers:
+---------------------------
+the headers are the key-value pair, where key is fixed and value will be changed based on the client request.
+
+some of the http request headers are :
+
+1. Date : date and time on which request is made from the client.
+2. Host: ipaddress of the client.
+3. user-agent: from which browser the client has generated the request.
+4.content-type: type of the data coming from the request body (json, txt, xml, pdf, jpg)
+5.connection : live or lost
+6.cookies: name-value pair text   :- 
+
+we can create our headers also.
+
+http response headers:
+----------------------------
+
+these headers carries some additional information to the client to guide the client
+when using or displaying the response.
+
+some of the http response headers are:
+
+server : 
+last-modified : 
+refresh: 10 
+date:
+connention: 
+content-type: "text/html"  , "application/json", "application/pdf" ,"application/xml"
+set-cookie : 
+etc..
+
+
+=================================================================================================================
+=================================================================================================================
+
+Q2/- Write down some of the frequently used HTTP Status codes and their meanings ?
+
+http status code:
+-----------------------
+
+--by default these status code will be set by the server, or as a developer we can 
+also set our desired status code.
+
+100 -- 199  : information 
+200 -- 299 : success or OK
+300--399 : redirection
+400 -499 : incomplete resource / bad request
+500-599 : server-error
+
+---these status code will be used by the client to know the status of their request.
+
+=================================================================================================================
+=================================================================================================================
+
+Q3/- What is the difference between SOAP and REST ?
+
+
+
+There are mainly two types of web services.
+1. SOAP web services.
+2. RESTful web services.
+
+SOAP Web Services
+--------------------
+SOAP stands for Simple Object Access Protocol. It is a XML-based protocol for
+accessing web services.
+
+SOAP is a W3C recommendation for communication between two applications.
+SOAP is XML based protocol. It is platform independent and language independent. By
+using SOAP, you will be able to interact with other programming language applications.
+
+Disadvantages of Soap Web Services
+Slow: SOAP uses XML format that must be parsed to be read. It defines many
+standards that must be followed while developing the SOAP applications. So it is slow
+and consumes more bandwidth and resource.
+
+WSDL dependent: SOAP uses WSDL and doesn't have any other mechanism to
+discover the service.
+
+
+RESTful Web Services
+-----------------------
+REST stands for REpresentational State Transfer.
+REST is an architectural style not a protocol.
+
+Advantages of RESTful Web Services
+Fast: RESTful Web Services are fast because there is no strict specification like SOAP.
+It consumes less bandwidth and resource.
+
+Language and Platform independent: RESTful web services can be written in any
+programming language and executed in any platform.
+
+Permits different data format: RESTful web service permits different data format such
+as Plain Text, HTML, XML and JSON.
+
+
+
+
+
+
+
+
+

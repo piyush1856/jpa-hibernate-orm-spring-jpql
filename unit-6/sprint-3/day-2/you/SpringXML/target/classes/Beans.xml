@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id = "helloWorld" class="com.masai.demo.HelloWorld" scope="prototype">
+       <property name="message">
+
+           <set>
+               <value>Shubhendu</value>
+               <value>Riyas</value>
+               <value>Deepak</value>
+               <value>Sarthak</value>
+           </set>
+       </property>
+   </bean>
+
+    <bean id="department2" class="com.masai.demo.autowired.Department" scope="prototype" init-method="doFirst" destroy-method="doFirst">
+        <property name="deptName" value="CSE"/>
+    </bean>
+
+    <bean id="employee" class="com.masai.demo.autowired.Employee" autowire="byType">
+    </bean>
+
+</beans>

@@ -1,0 +1,10 @@
+--In DataAccessLayer,between persistent class IS-A relationship is posibly exist.
+--but in DB we don't have IS-A relationship between corresponding tables.
+--to solve this problem we use inheritence mapping in HB.
+
+
+
+JPA supports inheritence mapping with 3 strategy:-
+1.one table for entire hirarchy/Single table.
+2.table per sub-classes/Joined Table
+3.Table per concreate class/ Table Per class:-

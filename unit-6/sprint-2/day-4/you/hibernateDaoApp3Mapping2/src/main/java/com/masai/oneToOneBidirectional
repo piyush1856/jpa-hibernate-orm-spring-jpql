@@ -1,0 +1,196 @@
+bidirectional:-
+===============
+here on both side define opposit class variables:-
+
+@Entity
+public class Department {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int deptId;
+	private String dname;
+	private String location;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Employee emp;
+
+	public int getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDname() {
+		return dname;
+	}
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Employee getEmp() {
+		return emp;
+	}
+
+	public void setEmp(Employee emp) {
+		this.emp = emp;
+	}	
+}
+
+
+@Entity
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int empId;
+	private String ename;
+	private int salary;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Department dept;
+	
+	
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEname() {
+		return ename;
+	}
+	public void setEname(String ename) {
+		this.ename = ename;
+	}
+	public int getSalary() {
+		return salary;
+	}
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+	public Department getDept() {
+		return dept;
+	}
+	public void setDept(Department dept) {
+		this.dept = dept;
+	}
+	
+}
+
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		Department d1=new Department();
+		d1.setDname("Sales");
+		d1.setLocation("kolkata");
+	
+		
+		Employee emp = new Employee();
+		emp.setEname("Ram");
+		emp.setSalary(8500);
+		
+		d1.setEmp(emp);
+		emp.setDept(d1);
+		
+		
+		em.getTransaction().begin();
+		em.persist(d1);  	// you can persist emp also
+		em.getTransaction().commit();
+		
+		System.out.println("done..");
+			
+	}
+
+}
+
+
+======================================================================================
+======================================================================================
+
+Using Mapped By :
+==================
+
+
+--in this case 2 table will be created both will containes the id of each other as FK as an extra column.
+
+department:-(emp_empid as FK)
+
+employee:- (dept_did as FK)
+
+--if we want that only one table should maintains the FK col then we use mappedBy on any side.
+
+ex:-
+
+
+Department:-
+   
+    @OneToOne(mappedBy = "dept")
+	private Employee emp;
+
+
+--here Employee class maintains the FK id by name dept_did
+--if we want to change this FK column name then 
+
+	@OneToOne
+	@JoinColumn(name = "did_FK")
+	private Department dept;
+	
+	
+=========================================================================================
+=========================================================================================
+	
+	Navigating from dept to emp:-
+	===============================
+	
+	
+	public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+		Department d1= em.find(Employee.class, 2).getDept();
+		
+		System.out.println(d1);
+		
+		
+		System.out.println("done..");		
+	}
+}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+

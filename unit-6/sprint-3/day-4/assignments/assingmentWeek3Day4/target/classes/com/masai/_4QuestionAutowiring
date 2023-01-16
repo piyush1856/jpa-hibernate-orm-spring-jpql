@@ -1,0 +1,42 @@
+
+
+The process of creating association between/among application components is known
+as "wiring".(variable is wired with appropriate object)
+
+We have 2 kind of wiring in spring application:
+1. Explicit wiring
+2. Auto-wiring (implicit wiring)
+
+If a spring developer specifies the associations for the dependency bean by
+<property> tag or <constructor-arg> tag, it is known as explicit wiring.
+
+Whereas if spring container on its own detects the dependencies implicitly and
+injecting them into the dependent bean is known as "auto-wiring".
+
+To instruct the spring container to perform auto-wiring for a particular bean, we make
+use of the "autowire" attribute inside the <bean> tag with any one of following values:
+1. no (default)
+2. byName
+3. byType
+4. constructor
+
+ In bean auto-wiring, spring container automatically injects a bean dependencies by
+either calling a setter method or calling parameterized constructor without writing
+explicitly inside the spring configuration file.
+
+
+
+constructor auto-wiring:
+-------------------------
+In this strategy , spring container uses constructor injection instead of setter injection.
+dependency resolution is done by using max number of argument constructor, if
+constructors are overloaded.
+
+Note:- it first uses byName and if not found then it uses byType , and in case
+byType is matched with more that 1 then ambiguity exception will occur.
+
+And if not matched ,here variable will not remain null, it will throw
+"UnsaticfiedDependencyException"
+
+This kind of auto-wiring is least preferred because of constructor ambiguity. and
+circular dependency

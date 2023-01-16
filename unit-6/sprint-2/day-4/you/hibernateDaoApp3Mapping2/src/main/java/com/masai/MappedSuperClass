@@ -1,0 +1,127 @@
+--Using the MappedSuperclass strategy, we can save only child class object, (here all the data of the child Entity and inherited data of the parent class 
+will be persisted).
+
+--in this strategy parent class will not be an Entity, it will be a normal java class.(can be an abstract class also)
+
+
+Example : 
+
+
+
+
+@MappedSuperclass
+public abstract class Employee {
+	
+	@Id  		 //id will be inherited by other child class
+	@GeneratedValue(strategy=GenerationType.AUTO)  
+	private int eid;
+	private String name;
+	
+	public int getEid() {
+		return eid;
+	}
+	public void setEid(int eid) {
+		this.eid = eid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+
+
+
+@Entity
+public class ContractutalEmployee extends Employee{
+	
+	private int noOfWorkingDays;
+	private int costPerDay;
+	
+	public int getNoOfWorkingDays() {
+		return noOfWorkingDays;
+	}
+	public void setNoOfWorkingDays(int noOfWorkingDays) {
+		this.noOfWorkingDays = noOfWorkingDays;
+	}
+	public int getCostPerDay() {
+		return costPerDay;
+	}
+	public void setCostPerDay(int costPerDay) {
+		this.costPerDay = costPerDay;
+	}
+}
+
+
+@Entity
+public class SalariedEmployee extends Employee{
+	
+	private int salary;
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+}
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		EntityManager em = EMUtil.provideEntityManager();
+		
+
+		
+		
+		SalariedEmployee semp=new SalariedEmployee();
+		semp.setName("Mohan");
+		semp.setSalary(85000);
+		
+		ContractutalEmployee cemp=new ContractutalEmployee();
+		cemp.setName("Hari");
+		cemp.setCostPerDay(3000);
+		cemp.setNoOfWorkingDays(10);
+		
+		em.getTransaction().begin();
+		
+		em.persist(semp);
+		em.persist(cemp);
+		em.getTransaction().commit();
+		
+		
+		
+		System.out.println("done..");		
+	}
+}
+
+
+OUTPUT :
+
+mysql> show tables;
++----------------------+
+| Tables_in_mapping    |
++----------------------+
+| contractutalemployee |
+| hibernate_sequence   |
+| salariedemployee     |
++----------------------+
+
+mysql> select * from contractutalemployee;
++-----+------+------------+-----------------+
+| eid | name | costPerDay | noOfWorkingDays |
++-----+------+------------+-----------------+
+|   2 | Hari |       3000 |              10 |
++-----+------+------------+-----------------+
+
+mysql> select * from salariedemployee;
++-----+-------+--------+
+| eid | name  | salary |
++-----+-------+--------+
+|   1 | Mohan |  85000 |
++-----+-------+--------+
+
+

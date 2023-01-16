@@ -1,0 +1,133 @@
+3.Table per concreate class/ Table Per class:-
+=================================
+
+--in this strategy,every Entity class of inheritence hirarcy will have its own DB table these tables need not stay in relationship.
+--in this strategy all the child class corresponding tables has all the column of its super class coresponding columns also.
+
+for ex:-
+class Employee(id,name)--->employee(id,name);
+class SalaryEmployee extends Employee(salary)------->semployee(id,name,salary);
+class ContractualEmployee extends Employee(noOfWorkingDays,costPerDay)---
+------->cemployee(id,name,noOfWorkingDays,costPerDays);
+
+
+--due to this,same column of parent table will be repeated inside all the child table.
+
+
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int eid;
+	private String name;
+	
+	public int getEid() {
+		return eid;
+	}
+	public void setEid(int eid) {
+		this.eid = eid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+
+@Entity
+public class ContractutalEmployee extends Employee{
+	
+	private int noOfWorkingDays;
+	private int costPerDay;
+	
+	public int getNoOfWorkingDays() {
+		return noOfWorkingDays;
+	}
+	public void setNoOfWorkingDays(int noOfWorkingDays) {
+		this.noOfWorkingDays = noOfWorkingDays;
+	}
+	public int getCostPerDay() {
+		return costPerDay;
+	}
+	public void setCostPerDay(int costPerDay) {
+		this.costPerDay = costPerDay;
+	}
+}
+
+@Entity
+public class SalariedEmployee extends Employee{
+	
+	private int salary;
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+}
+
+
+OUTPUT :
+----------
+
+mysql> select * from employee;
++-----+------+
+| eid | name |
++-----+------+
+|   1 | Ram  |
++-----+------+
+
+mysql> select * from contractutalemployee;
++-----+------+------------+-----------------+
+| eid | name | costPerDay | noOfWorkingDays |
++-----+------+------------+-----------------+
+|   3 | Hari |       3000 |              10 |
++-----+------+------------+-----------------+
+
+mysql> select * from salariedemployee;
++-----+-------+--------+
+| eid | name  | salary |
++-----+-------+--------+
+|   2 | Mohan |  85000 |
++-----+-------+--------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

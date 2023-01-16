@@ -1,0 +1,273 @@
+Hot module reloading :
+======================
+-> Add  devTool maven dependency in pom.xml
+-> will automatically build and deploy any changes, no need to stop and restart
+
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+//http://localhost:8888/hello
+	
+	@RequestMapping("/hello")
+	//@ResponseBody
+	public String sayHello() {
+		return "Welcome to Masai School";
+	}
+	
+	
+	@RequestMapping("/hi")
+	//@ResponseBody
+	public String sayHello2() {
+		return "Welcome to spring  boot";
+	}
+	
+	
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+Returning Student object :
+
+//http://localhost:8888/stud
+	@RequestMapping("/stud")
+	public Student getStudent() {
+		Student s = new Student(10, "Piyush", 100);
+		
+		return s;
+	}
+	
+	output : {"roll":10,"name":"Piyush","marks":100}
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+Nested JSON Object :
+
+class Address{
+
+	private String city;
+	private String state;
+	private String pin;
+	
+	//getter setter
+} 
+
+public class Student {
+	
+	private int roll;
+	private String name;
+	private Address addr;
+	private int marks ;
+	
+	//getter and setter
+}
+
+
+JSON representation of Student object :
+
+{
+	"roll" : 100,
+	"name" : "Piyush",
+	"addr" : {
+				"city" : " Pune",
+				"state" : "UP",
+				"pin" : "654689"
+			  }'
+	"marks" : 810		  
+
+}
+	
+	
+	for list of student :
+	---------------------
+	
+[
+
+{
+	"roll" : 100,
+	"name" : "Piyush",
+	"addr" : {
+				"city" : " Pune",
+				"state" : "UP",
+				"pin" : "654689"
+			  }'
+	"marks" : 810		  
+
+},
+
+{
+	"roll" : 100,
+	"name" : "Piyush",
+	"addr" : {
+				"city" : " Pune",
+				"state" : "UP",
+				"pin" : "654689"
+			  }'
+	"marks" : 810		  
+
+}
+
+]
+	
+NOTE : while returning the response from the web services methods, Spring f/w uses some of the message converters
+	   to convert the java object into the domain format like JSON object, xml format, etc.
+	   
+
+-> The default conversion type is JSON type, here Spring f/w uses "message converter" with the help of "Jackson Api" internally. 
+
+
+Different ways to specify :
+	@RequestMapping(value = "/student",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("/students") // @RequestMapping + Method.GET
+	@RequestMapping("/studList") 	 
+
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+Sending the data to the server by the client using :
+1. Path variable
+2. request Parameter
+3. Request body
+
+1. Path variable
+-----------------
+-> data without key.
+
+	http://localhost:8888/students/10  //here 10 is the path variable 
+	
+	example : 
+	
+	@GetMapping("/students/{r}")
+	public Student getStudList(@PathVariable("r") int roll){
+
+		Student s = new Student(roll, "Piyush", 654);
+		return s;
+	}
+	http://localhost:8888/students/10
+	
+	
+	sending multiple path variable : 
+	----------------------------------
+	
+	@GetMapping("/students/{r}/{n}/{m}") 
+	public /*List<Student>*/ Student getStudList(@PathVariable("r") int roll, @PathVariable("n") String name,@PathVariable("m") int marks){
+		
+		//here we can find the student with the supplied roll from DB
+	
+		Student s = new Student(roll, name, marks);
+		return s;
+	
+	}
+    http://localhost:8888/students/11/Krishan/154
+
+
+
+Note : Inside the spring boot application (in web services or REStfull api) while creating a java bean class, we shoukld always consider Wrapper classes instead of using
+	primitive variable
+
+
+2. request Parameter
+----------------------
+ here we need to use key value pair :
+ http://localhost:8888/students?roll=10&name=ram&marks=600
+ 
+ @GetMapping("/students") 
+	public /*List<Student>*/ Student getStudList(@RequestParam("roll") Integer roll,
+			                                     @RequestParam("name") String name,
+			                                     @RequestParam("marks") Integer marks){
+		
+		Student s = new Student(roll, name, marks);
+		return s;
+	
+	}
+	
+*****Note : By default @RequestParam is mandatory, to make optional : 
+     eg :
+	
+	@GetMapping("/students") 
+	public /*List<Student>*/ Student getStudList(@RequestParam("r") Integer roll,
+			                                     @RequestParam("n") String name,
+			                                     @RequestParam(value="m" , required= false) Integer marks){
+		
+		Student s = new Student(roll, name, marks);
+		return s;
+	
+	}
+	
+	http://localhost:8888/students?r=10&n=ram
+	{"roll":10,"name":"ram","marks":null}
+	
+	we can skip the value of marks and the value will become null.
+
+	
+
+*** Note : Duplicate URI with same http method will not be allowed, it will throw an exception.
+
+-> we can use same uri but method should be different ( post or put)	
+
+
+  
+  using Path variable and Request parameter together :
+ ----------------------------------------------------------
+ In this case, the Path variable should always come first
+ 
+ 	@GetMapping("/students/{roll}") 
+	public /*List<Student>*/ Student getStudList(@PathVariable("roll") Integer roll,
+												 @RequestParam("n") String name){
+		
+		Student s = new Student(roll, name, 500);
+		return s;
+	
+	}
+	
+	http://localhost:8888/students/10?n=Piyush
+	
+	
+	
+3. Request body
+-------------------
+
+-- if we try to send the data using request body then we need to use http method either POST or PUT
+-- GET or DELETE method don't have method body
+
+	@PostMapping("/students")
+	public String registerStudent(@RequestBody Student s ) {
+		
+		// here we can connect with the database and the save the student object in database
+		return "Student Stored" + s;
+		
+	}	
+	
+	
+	
+	
+	Note: as we can give a reachable uri to our method(resource) we can specify a reachable uri to the root resource(class) also.
+
+example:
+
+
+@RestController 
+@RequestMapping("/studentapp")
+public class MyController {
+	
+	@RequestMapping("/hello")
+	public String sayHello() {
+		
+		return "welcome to masai.......";
+		
+		//logical name of physical jsp page
+	}
+	
+
+}
+
+
+http://localhost:8888/studentapp/hello
+	
+	
+	
+	
+	
+	
+	

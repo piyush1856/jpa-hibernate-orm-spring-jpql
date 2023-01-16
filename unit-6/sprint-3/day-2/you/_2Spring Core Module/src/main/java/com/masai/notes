@@ -1,0 +1,346 @@
+
+-> Application Context :
+	1. ClassPathXmlApplicationContext
+		if spring configuration file is in current class path.
+	2. FileSystemXmlApplicationContext
+		if spring configuration file is in different location
+	
+
+xml file : Spring Configuration file
+
+
+
+
+class X{
+	int i; //simple type dependency
+	String s; //simple type dependency
+	
+	Student student; // Obejct type dependency
+	
+	int[] arr; // collection Depenendency
+	List<Student> theList; // collection dependency
+}
+
+
+
+Setter Injection :
+========================
+public class Travel {
+	
+	//it is the dependency
+	Vehicle v; //here we can store one of its implemented class obj.
+	
+	private int noOfPerson;
+	
+	
+	
+	
+	//constructor injection point
+	/*public Travel(Vehicle v) {
+	this.v=v;
+	} */
+	
+	//setter injection point
+	public void setV(Vehicle v) {
+		this.v=v;
+	}
+	
+	//setter injection point
+	public void setNoOfPerson(int noOfPerson) {
+		this.noOfPerson = noOfPerson;
+	}
+
+
+
+
+
+
+	public void journey() {
+		v.go();
+		System.out.println("Jounrney started...");
+		System.out.println("No of person" + noOfPerson);
+	}
+
+}
+
+
+	<!-- CONNECTING JAVABEAN TO SPRING CORE : SELF CLOSING TAGS WITHOUT ANY PROPERTY  -->
+	<bean id ="c" class ="com.masai.coupling.Car" />
+	<bean id ="b" class ="com.masai.coupling.Bike" />
+	
+	
+	
+	<bean id="mb" class="com.masai.springCore.MyBusinessClass"/>
+		
+		
+	<!-- CONNECTING JAVABEAN TO SPRING CORE : WITH PROPERTY  -->
+	<bean id="travel" class ="com.masai.coupling.Travel">
+		
+		<property name="noOfPerson" value="2"/>
+		<property name="v" ref="b"/>
+	
+	</bean>
+	
+	<bean id="travel2" class ="com.masai.coupling.Travel">
+		
+		<property name="noOfPerson" value="5"/>
+		<property name="v" ref="c"/>
+	
+	</bean>
+	
+	
+	
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		//activate the spring IOC container
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		//pulling the springBean object with the help of ID
+//		MyBusinessClass obj = ctx.getBean("mb", MyBusinessClass.class);
+//		
+//		obj.fun1();
+		
+		
+		Travel obj2 = ctx .getBean("travel",Travel.class);
+		obj2.journey();
+		
+		Travel obj3 = ctx .getBean("travel2",Travel.class);
+		obj3.journey();
+
+	}
+
+}
+
+
+Constructor injection :
+========================
+
+inside <bean/> : 
+	<bean id="travel2" class ="com.masai.coupling.Travel">
+		
+		<constructor-arg name ="noOfPerson"  value ="1"/>
+		<constructor-arg name ="v" ref ="b"/>
+	
+	</bean>
+
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+		//activate the spring IOC container
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		//pulling the springBean object with the help of ID
+//		MyBusinessClass obj = ctx.getBean("mb", MyBusinessClass.class);
+//		
+//		obj.fun1();
+		
+		
+//		Travel obj2 = ctx .getBean("travel",Travel.class);
+//		obj2.journey();
+		
+		Travel obj3 = ctx .getBean("travel2",Travel.class);
+		obj3.journey();
+		
+		
+
+	}
+
+}
+
+
+
+
+package com.masai.coupling;
+
+public class Travel {
+	
+	//it is the dependency
+	Vehicle v; //here we can store one of its implemented class obj.
+	
+	private int noOfPerson;
+
+	
+	public Travel(Vehicle v, int noOfPerson) {
+		super();
+		this.v = v;
+		this.noOfPerson = noOfPerson;
+	}
+
+
+
+//	//setter injection point
+//	public void setV(Vehicle v) {
+//		this.v=v;
+//	}
+//	
+//	//setter injection point
+//	public void setNoOfPerson(int noOfPerson) {
+//		this.noOfPerson = noOfPerson;
+//	}
+
+
+	public void journey() {
+		v.go();
+		System.out.println("Jounrney started...");
+		System.out.println("No of person" + noOfPerson);
+	}
+
+}
+
+If dependencies are mandatory for the object then use Constructor injection else setter injection
+
+
+==================================================================================
+==================================================================================
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- CONNECTING JAVABEAN TO SPRING CORE : SELF CLOSING TAGS WITHOUT ANY PROPERTY  -->
+	<bean id ="c" class ="com.masai.coupling.Car" />
+	<bean id ="b" class ="com.masai.coupling.Bike" />
+	
+	
+	
+	<bean id="mb" class="com.masai.springCore.MyBusinessClass"/>
+		
+		
+	<!-- CONNECTING JAVABEAN TO SPRING CORE : WITH PROPERTY  -->
+	
+	
+	<bean id="travel2" class ="com.masai.coupling.Travel">
+		
+		
+		<constructor-arg name ="noOfPerson"  value ="1"/>
+		<constructor-arg name ="v" ref ="b"/>
+	
+</bean>
+
+
+
+</beans>
+
+===========================================================================================
+===========================================================================================
+
+Circular Dependency :  Exception due to recursive calls
+==========================
+	<bean id="aobj" class = "com.masai.circularDepedency.A">
+		
+		<constructor-arg name = "b1" ref ="bobj"/>
+	
+	</bean>
+	
+	
+		
+	<bean id="bobj" class = "com.masai.circularDepedency.B">
+		
+		<constructor-arg name = "b1" ref ="aobj"/>
+	
+	</bean>
+
+
+so, use setter injection in one side
+===============================================================================
+===============================================================================
+
+DUMMY LAYED APPLICATION PACKAGE ;
+
+	<bean id="db" class="com.masai.dummyLayerApp.DaoBean"/>
+	
+	<bean id="sb" class="com.masai.dummyLayerApp.ServiceBean">
+		<property name="dao" ref="db"/>
+	</bean>
+	
+	<bean id="pb" class="com.masai.dummyLayerApp.PresentationBean">
+		<property name="service" ref="sb"/>
+	</bean>
+	
+	
+
+.=========================================================================================
+
+
+AUTOWIRE :
+==========
+
+byName:
+--------
+
+
+	<bean id="dao" class="com.masai.dummyLayerApp.DaoBean"/>
+	
+	<bean id="service" class="com.masai.dummyLayerApp.ServiceBean" autowire="byName"/>
+	
+	<bean id="pb" class="com.masai.dummyLayerApp.PresentationBean" autowire="byName"/>
+	
+	
+byType :
+---------	
+
+<bean id="db" class="com.masai.dummyLayerApp.DaoBean"/>
+	
+	<bean id="sb" class="com.masai.dummyLayerApp.ServiceBean" autowire="byType"/>
+	
+	<bean id="pb" class="com.masai.dummyLayerApp.PresentationBean" autowire="byType"/>
+	
+
+**-> byName and byType both uses setter injection : but in byType ambiguity problem arises
+
+
+constructor auto-wiring:
+--------------------------
+
+	<bean id="db" class="com.masai.dummyLayerApp.DaoBean"/>
+	
+	<bean id="sb" class="com.masai.dummyLayerApp.ServiceBean" autowire="constructor"/>
+	
+	<bean id="pb" class="com.masai.dummyLayerApp.PresentationBean" autowire="constructor"/>
+
+Note:- It first uses byName and if not found then it uses byType , and in case
+	   byType is matched with more that 1 then ambiguity exception will occur.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

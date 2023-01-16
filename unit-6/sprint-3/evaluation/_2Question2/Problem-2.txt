@@ -1,0 +1,55 @@
+What do you mean by the IOC ? : 
+
+The full form of IOC is Inversion of control.
+
+Generally, when a class depends upon the another class then that class is known as dependent class and the class on which
+dependent class depends is called dependency. In this structure the dependent class uses the methods of dependency class,
+this is called by creating the dependency class object created in dependent class.
+
+In this process if we want to change or add any other dependency we have to make changes in the whole structure, variable 
+or the methods due to tight coupling.
+
+So, their is concept of Inversion of control in which the control goes to an external entity which will take care of creating the 
+object of the required dependency class in depedent class. this can be acheived by using interface and implementing it in different other
+dependenct class.
+
+Dependency can be injected by either setter injection or constructor injection.
+
+=====================================================================================================================================================
+
+What is Dependency Injection ? :
+
+The term Dependency Injection means that when the Enternal Entity, which is created in Inversion of Control process,
+pushes the object of dependency class to the depedent class dyanamically is dependency injection.
+
+object in container ---> pushes the object in dependent class.
+
+In spring, a java class which control the spring bean is called spring container,this spring container acts as an
+ external entity which pushes the object in dependent class.
+
+Dependnecy can be injected by either setter injection or constructor injection.
+
+
+=====================================================================================================================================================
+
+Explain the life cycle of the Spring Bean ?
+
+Spring container controls the life cycle of a bean. The life cycle stages of a bean is mentioned below :
+	
+1. Does not exist : At start spring bean does not exist. It can be instantiated by either loading xml file or pulling the 
+				the object by getBean() method based upon the scope of bean i.e Singleton or prototype respectively.
+
+2. Instantiated : When the container load and create the spring bean object into the memory and injects the dependency
+			  is Instantiated stage.
+ 
+3. initialized : In this stage if their is any init method, spring container will call it.
+
+4. Service : In this stage the caller/client will get the bean object by spring container and can call the business 
+		   methods of that bean object.
+
+5. Destroy : when we call close() method on container spring container will call the destroy() method just before garbage
+		   collector will dispose the bean.
+
+
+
+

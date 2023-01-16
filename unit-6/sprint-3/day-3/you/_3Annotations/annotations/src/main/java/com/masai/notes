@@ -1,0 +1,491 @@
+pom.xml
+========
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.24</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.24</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.3.24</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+    </dependencies>
+    
+    
+    
+=======================================================================================================================
+=======================================================================================================================
+    
+    
+    <?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd
+        
+        ">
+
+
+
+	<context:component-scan base-package="com.masai" />
+	
+	
+	
+</beans>
+    
+    
+=======================================================================================================================
+=======================================================================================================================
+    
+ AutoWire :
+ ------------
+ 
+ @Service
+public class A {
+	
+	@Autowired(required = false)
+	private B b1;
+	
+	public void funA() {
+		System.out.println("inside funA of A");
+		System.out.println(b1);
+	}
+
+}
+
+//@Service     //@Autowired(required = false) in A class to avoid exception so @service can be commented out 
+public class B {
+	
+	public void funB() {
+		System.out.println("inside funB of B");
+	}
+
+
+}
+ 
+ 
+ 
+ In the above application if we register one more object of B class as a spring bean using XML
+also with different id, then the Spring container will throw an ambiguity exception.
+
+Example:  <bean id="b5" class="com.masai.B"/>
+
+
+Spring container will first use byName strateg y to search the registered Spring bean, since it
+will not found then Spring container will use byType strategy to search the registered Spring
+bean, here it will found 2 spring bean one registered using stereotype annotation and another is
+registered with XML configuration, and Spring container would not qualify the appropriate bean
+to inject so it will raise an ambiguity error.
+
+
+To solve the above problem we can make use @Qualifier annotation with the specific bean id
+which we want to inject.
+    
+@Autowired
+@Qualifier("b5") // to choose one spring bean obj among multiple registered obj.
+private B b1;
+    
+   
+=======================================================================================================================
+======================================================================================================================= 
+    
+1. @Scope:
+-------------
+ Using this annotation we define scope of a spring bean.
+ Default scope for a spring bean is "singleton" scope.
+ 
+Example:
+
+@Service
+@Scope("prototype")
+public class A {
+--
+}
+    
+    
+2. @PostConstruct and @PreDestroy:
+---------------------------------
+It is similar to "init-method" and "destroy-method".
+Both are the method level annotations.
+
+In order to use these annotation we need to add following dependency inside the pom.xml
+file: javax.annotation-api:
+   
+   <dependency>
+		<groupId>javax.annotation</groupId>
+		<artifactId>javax.annotation-api</artifactId>
+		<version>1.3.2</version>
+	</dependency>
+    
+    
+@Service
+public class A {
+	@Autowired
+	private B b1;
+	
+	@PostConstruct
+	public void setUp() {
+		System.out.println("inside set up method");
+	}
+	
+	@PreDestroy
+	public void tearDown(){
+		System.out.println("inside tear down method");
+	}
+	
+	//main business logic
+	public void funA() {
+		System.out.println("inside funA of A");
+		System.out.println(b1);
+	}
+}
+
+
+
+Note: If our Spring Bean is in prototype scope then, Spring 
+	container will not manage the life-cycle of Spring bean
+	after giving the object to the client. i.e destroy method will not be 
+	called on Spring Bean obj in prototype scope.
+
+    
+   
+    
+@Bean 
+
+--to register a normal java class with container to make a Spring Bean
+
+1. by using <bean> tag
+
+2.by using stereotype annotation
+
+3. by using @Bean tag    
+    
+    
+---------------------------------------------------------------------------------
+
+    3. @Configuration:
+    -----------------------
+    
+From spring 4.x onward we can define a configuration class, instead of spring
+configuration file (XML file)
+
+To make a java class as a spring configuration class we need to annotate that class by
+using @Configuration annotation.
+
+It is a class level annotation.
+    
+    
+    @Configuration
+		public class AppConfig{
+	}
+	
+Note:- If we are using annotation based configuration class instead of the XML based
+configuration file then we need to use "AnnotationConfigApplicationContext" container
+instead of "ClassPathXmlApplicationContext" container.
+
+	Example:
+	incase of XML based configuration file:-
+	ApplicationContext ctx= new ClassPathXmlApplicationContext("applicationContext.xml");
+	
+	incase of annotation-based configuration class:-
+	ApplicationContext ctx= new AnnotationConfigApplicationContext(AppConfig.class);
+	
+ 
+    
+Note:- we can write more than one spring configuration class also
+
+  Example:
+@Configuration
+public class AppConfig2{
+
+}
+in that case:-
+ApplicationContext ctx= new AnnotationConfigApplicationContext(AppConfig.class,AppConfig2.class);
+    
+ --------------------------------------------------------------------------------------------
+ ****** -->
+ Deleting the xml file fron now instead use @configuratio :
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd
+        
+        ">
+
+
+
+	<context:component-scan base-package="com.masai" />
+	
+	
+	
+</beans>
+ 
+    
+ ================================================================================================
+ =-====================================================================================================
+ 
+ 
+ 4.@ComponentScan:
+ -------------------
+It is also a class level annotation
+This annotation will enable the component auto-scanning feature.
+Note: this annotation should be used on the spring configuration class only, i.e. the class
+which is annotated with @Configuration annotation.
+
+Example:
+    
+ @Configuration
+//@ComponentScan(basePackages = "com.masai")
+@ComponentScan(basePackages ={ "com.masai" ,"com.abc" })
+public class AppConfig{
+
+}
+ 
+ -------------------------------------------------------------------------
+ 
+    5. @Bean:
+    ---------
+    We have 3 ways to register a java class with the spring container, to make a spring
+	bean:
+	1. by using <bean> tag.
+	2. by using Stereotype annotation
+	3. by using @Bean annotation
+    
+    
+It is a method level annotation.
+
+On which method, we apply this annotation should return any object, spring container
+will register the returned object with itself(with container) with the id as method name
+itself.
+
+We can define @Bean annotated method either inside @Configuration annotated class
+or inside any spring bean class(which is annotated with stereotype annotation and
+scanned by the spring container).
+
+While auto-scanning, when container encounters with @Bean annotated method, it will
+call that method and register the returned object with the spring container by the id as
+the method name itself.
+    
+  
+  
+@Configuration
+@ComponentScan(basePackages = "com.masai")
+public class AppConfig {
+
+	@Bean
+	public B getB(){
+		B b1=new B();
+		return b1;
+
+	}
+}
+  
+  Here the getB() method will be called automatically at the time of scanning and returned
+object of that method will be registered with the container with the id "getB".
+  
+  If we want to change the id name as "b1" then:
+  
+@Bean("b1")
+public B getB(){
+	B b1=new B();
+	return b1;
+}
+  
+  
+  With the help of @Bean annotation we can register any predefined classes also with
+the container.
+  
+  	@Bean("clist")
+	public List<String> getCities(){
+	
+		List<String> cities = new ArrayList<String>();
+		
+		cities.add("delhi");
+		cities.add("chennai");
+		cities.add("mumbai");
+		cities.add("kolkata");
+		
+		return cities;
+	}
+  
+    
+@Service
+public class A {
+	
+	@Autowired
+	private List<String> cities;
+	
+	public void funA() {
+		System.out.println("inside funA of A");
+		System.out.println(cities);
+    
+  	}
+}  
+    
+    
+    
+   ------------------------------------------------------------------------------------------------
+   
+   6. @Value:
+   ------------
+This annotation is used to inject simple values type variables 
+    
+    
+@Service
+public class A {
+	
+	@Value("100")
+	int roll=100;
+	
+	@Value("Ram")
+	String name;
+	
+	@Value("780")
+	int marks;
+	
+	public void funA() {
+		System.out.println("inside funA of A");
+		System.out.println("Roll is "+roll);
+		System.out.println("Name is "+name);
+		System.out.println("Marks is "+marks);
+	}
+}
+    
+    
+Note:- this @Value annotation is not used to supply dummy data as above program.
+	   It is used to supply the dynamic value from the properties files.
+    
+    
+    
+Properties file: It is a textual file with the (dot).properties extension.
+ 
+This file contains the entries in the form of key-value pair
+
+Step 1: create a1.properties file inside src/main/resources folder in maven application
+	db.driverName=com.mysql.cj.jdbc.Driver
+	db.url=jdbc:mysql://localhost:3306/ratandb
+	db.username=root
+	db.password=root    
+
+Step 2: Now we can inject these values to the simple type variable of our Bean
+	    
+@Service
+public class A {
+	
+	@Value("${db.driverName}")
+	private String dname;
+	
+	@Value("${db.url}")
+	private String url;
+	
+	@Value("${db.username}")
+	private String uname;
+	
+	@Value("${db.password}")
+	private String pass;
+	
+	public void funA() {
+		System.out.println("inside funA of A");
+		System.out.println("Driver name is "+dname);
+		System.out.println("Connection URL is "+url);
+		System.out.println("Username is "+uname);
+		System.out.println("Password is "+pass);
+	}
+}
+    
+    
+Step 3: specify the name of the properties file using @PropertySource annotation on the
+		top of @Configuration annotated class.
+    
+    
+    @Configuration
+	@ComponentScan(basePackages = "com.masai")
+	@PropertySource("a1.properties")
+	public class AppConfig {
+	
+	}
+    
+    
+    If we have multiple properties files:  
+    
+    
+    @Configuration
+	@ComponentScan(basePackages = "com.masai")
+	@PropertySources({
+	@PropertySource("a1.properties"),
+	@PropertySource("a2.properties")
+	})
+	public class AppConfig {
+	} 
+    
+    
+    Note:- we can read the properties files details by using "Environment" object also, in much
+	more easier way.
+	
+	
+    @Service
+	public class A {
+		
+		@Autowired
+		private Environment env;
+		
+		public void funA() {
+			System.out.println("inside funA of A");
+			System.out.println("Driver name is "+env.getProperty("db.driverName"));
+			System.out.println("Connection URL is "+env.getProperty("db.url"));
+			System.out.println("Username is "+env.getProperty("db.username"));
+			System.out.println("Password is "+env.getProperty("db.password"));
+		}
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
